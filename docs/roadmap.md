@@ -37,14 +37,15 @@ These turn the core into a ready-to-use, professional product.
 
 | # | Feature |
 | --- | --- |
-| 7 | Anomaly detection / predictive maintenance (statistical first) |
-| 8 | Golden-baseline comparison — auto-diff runs against a known-good reference |
-| 9 | Annotations & comments on runs and timestamps |
-| 10 | Grafana / Prometheus export |
-| 11 | Device identity & mTLS — per-device certificates, signed firmware, encrypted WAL at rest |
-| 12 | Secrets management — credentials never in plain config |
-| 13 | SSO / SCIM + per-tenant data isolation (OIDC / SAML) |
-| 14 | Metering & billing service — foundation for usage-based cloud pricing |
+| 8 | Master / slave remote development — develop on the desktop, deploy to the rig unchanged |
+| 9 | Anomaly detection / predictive maintenance (statistical first) |
+| 10 | Golden-baseline comparison — auto-diff runs against a known-good reference |
+| 11 | Annotations & comments on runs and timestamps |
+| 12 | Grafana / Prometheus export |
+| 13 | Device identity & mTLS — per-device certificates, signed firmware, encrypted WAL at rest |
+| 14 | Secrets management — credentials never in plain config |
+| 15 | SSO / SCIM + per-tenant data isolation (OIDC / SAML) |
+| 16 | Metering & billing service — foundation for usage-based cloud pricing |
 
 ---
 
@@ -52,12 +53,12 @@ These turn the core into a ready-to-use, professional product.
 
 | # | Feature |
 | --- | --- |
-| 15 | MES / ERP / PLM connectors — push results and calibration state outward |
-| 16 | More protocols — CAN/CANopen, EtherCAT, Profinet, EtherNet/IP, LXI, GPIB/VISA-USB, BACnet |
-| 17 | Native DAQ drivers — National Instruments, Keysight DAQ970A, Dewesoft |
-| 18 | Vision / camera — optical inspection during a test cycle |
-| 19 | Data import standards — ECLASS / eCl@ss / GS1 classification (feeds Sample Management) |
-| 20 | AI-assisted authoring — generate pipes/scripts and summarize reports |
+| 17 | MES / ERP / PLM connectors — push results and calibration state outward |
+| 18 | More protocols — CAN/CANopen, EtherCAT, Profinet, EtherNet/IP, LXI, GPIB/VISA-USB, BACnet |
+| 19 | Native DAQ drivers — National Instruments, Keysight DAQ970A, Dewesoft |
+| 20 | Vision / camera — optical inspection during a test cycle |
+| 21 | Data import standards — ECLASS / eCl@ss / GS1 classification (feeds Sample Management) |
+| 22 | AI-assisted authoring — generate pipes/scripts and summarize reports |
 
 ---
 
@@ -65,8 +66,8 @@ These turn the core into a ready-to-use, professional product.
 
 | # | Feature |
 | --- | --- |
-| 21 | Template / recipe library — community-shared pipes, scripts, report packs |
-| 22 | ML-driven anomaly detection and fleet health scoring |
+| 23 | Template / recipe library — community-shared pipes, scripts, report packs |
+| 24 | ML-driven anomaly detection and fleet health scoring |
 
 ---
 

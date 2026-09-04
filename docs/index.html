@@ -18,7 +18,7 @@
         <span class="brand-name">DAQ<span>core</span></span>
       </a>
       <nav class="nav-links">
-        <a href="#ecosystem">Platform</a>
+        <a href="#">Platform</a>
         <a href="#capabilities">Capabilities</a>
         <a href="#stack">Stack</a>
         <a href="#security">Security</a>
@@ -26,6 +26,11 @@
         <a href="#marketplace">Marketplace</a>
       </nav>
       <div class="nav-cta">
+        <a class="btn btn-ghost" href="https://github.com/daqcore" target="_blank" rel="noopener">
+          <svg class="gh-icon" viewBox="0 0 16 16" width="15" height="15" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+          GitHub
+        </a>
+        <a class="btn btn-ghost" href="#live">Demo</a>
         <a class="btn btn-ghost" href="architecture.md">Docs</a>
         <a class="btn btn-primary" href="#cta">Get Started</a>
       </div>
@@ -43,16 +48,47 @@
           automation, sample tracking, and compliance reporting into one professional
           platform. Runs on Windows, Linux, Raspberry Pi, and Docker.
         </p>
-        <div class="hero-actions">
-          <a class="btn btn-primary btn-lg" href="#cta">Start free on your edge</a>
-          <a class="btn btn-ghost btn-lg" href="#live">See the live demo</a>
+      </div>
+
+      <div class="eco">
+        <div class="eco-orbit"></div>
+        <div class="eco-core">
+          <span class="eco-core-label">The Core</span>
+          <h3>DAQcore<br />Test Data Spine</h3>
+          <p>Rust · drivers · WAL · pipelines · scripts · samples</p>
         </div>
-        <div class="hero-stats">
-          <div class="stat"><strong>50k+</strong><span>samples / sec</span></div>
-          <div class="stat"><strong>0 €</strong><span>to instrument a bench</span></div>
-          <div class="stat"><strong>0 leaks</strong><span>memory-leak reliability</span></div>
-          <div class="stat"><strong>100%</strong><span>offline-capable edge</span></div>
+
+        <div class="eco-node n1">
+          <h4>Edge Agent</h4>
+          <p>Free daemon on Windows, RPi, or IPC. Hardware I/O + offline buffering.</p>
         </div>
+        <div class="eco-node n2">
+          <h4>Cloud &amp; Console</h4>
+          <p>Real-time dashboards, fleet control, remote commands.</p>
+        </div>
+        <div class="eco-node n3">
+          <h4>Marketplace</h4>
+          <p>Registry + storefront for drivers, connectors, report packs.</p>
+        </div>
+        <div class="eco-node n4">
+          <h4>Professional Services</h4>
+          <p>Certification, custom drivers, compliance validation.</p>
+        </div>
+        <div class="eco-node n5">
+          <h4>Partner Program</h4>
+          <p>System integrators &amp; compliance labs.</p>
+        </div>
+        <div class="eco-node n6">
+          <h4>Bundles &amp; Plugins</h4>
+          <p>Versioned, installable extensions for any device.</p>
+        </div>
+      </div>
+
+      <div class="hero-stats">
+        <div class="stat"><strong>50k+</strong><span>samples / sec</span></div>
+        <div class="stat"><strong>0 €</strong><span>to instrument a bench</span></div>
+        <div class="stat"><strong>0 leaks</strong><span>memory-leak reliability</span></div>
+        <div class="stat"><strong>100%</strong><span>offline-capable edge</span></div>
       </div>
     </section>
 
@@ -67,51 +103,6 @@
           <span>Radar &amp; RF Test</span>
           <span>Battery Test</span>
           <span>Production EOL</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- ECOSYSTEM -->
-    <section class="section section-alt" id="ecosystem">
-      <div class="container">
-        <div class="section-head">
-          <span class="eyebrow">The ecosystem</span>
-          <h2>One core, services around it</h2>
-          <p class="sub">A single Rust test-data spine with everything you need to acquire, automate, track, and report — arranged as a unified platform.</p>
-        </div>
-
-        <div class="eco">
-          <div class="eco-orbit"></div>
-          <div class="eco-core">
-            <span class="eco-core-label">The Core</span>
-            <h3>DAQcore<br />Test Data Spine</h3>
-            <p>Rust · drivers · WAL · pipelines · scripts · samples</p>
-          </div>
-
-          <div class="eco-node n1">
-            <h4>Edge Agent</h4>
-            <p>Free daemon on Windows, RPi, or IPC. Hardware I/O + offline buffering.</p>
-          </div>
-          <div class="eco-node n2">
-            <h4>Cloud &amp; Console</h4>
-            <p>Real-time dashboards, fleet control, remote commands.</p>
-          </div>
-          <div class="eco-node n3">
-            <h4>Marketplace</h4>
-            <p>Registry + storefront for drivers, connectors, report packs.</p>
-          </div>
-          <div class="eco-node n4">
-            <h4>Professional Services</h4>
-            <p>Certification, custom drivers, compliance validation.</p>
-          </div>
-          <div class="eco-node n5">
-            <h4>Partner Program</h4>
-            <p>System integrators &amp; compliance labs.</p>
-          </div>
-          <div class="eco-node n6">
-            <h4>Bundles &amp; Plugins</h4>
-            <p>Versioned, installable extensions for any device.</p>
-          </div>
         </div>
       </div>
     </section>
@@ -261,6 +252,38 @@
               <span class="pd pd-more">+122</span>
             </div>
             <code class="pipe-code">deploy pipe:v3 → 128 devices ✓</code>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MASTER / SLAVE -->
+    <section class="section" id="develop">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Master / Slave</span>
+          <h2>Develop at your desk. Deploy to the rig unchanged.</h2>
+          <p class="sub">Keep the sensors on the Raspberry Pi in the rig, and build the automation from your desktop — then ship the same config to the rig with zero changes.</p>
+        </div>
+        <div class="pipe-grid">
+          <div class="pipe-col">
+            <div class="pipe-head"><span class="pipe-num">01</span><h3>Master — your desktop</h3></div>
+            <p>Run the agent on your PC and drive the rig's real hardware remotely while you write scripts and pipelines. Fast iteration, no walking to the bench.</p>
+            <div class="pipe-flow">
+              <span class="pf">LAN · rig-01.local</span><span class="pf-arrow">or</span>
+              <span class="pf">cloud · rig-01</span>
+            </div>
+            <code class="pipe-code">daqcore-agent --mode master --slave rig-01.local</code>
+          </div>
+          <div class="pipe-col">
+            <div class="pipe-head"><span class="pipe-num">02</span><h3>Slave — the rig</h3></div>
+            <p>The Raspberry Pi owns the sensors and exposes them over the network — reachable on the LAN or via the cloud. Same devices, same scripts, same bundles — just a different run mode.</p>
+            <div class="pipe-flow">
+              <span class="pf">devices.toml</span><span class="pf-arrow">→</span>
+              <span class="pf">scripts</span><span class="pf-arrow">→</span>
+              <span class="pf">pipelines</span>
+            </div>
+            <code class="pipe-code">deploy → rig, no changes</code>
           </div>
         </div>
       </div>
@@ -439,7 +462,7 @@
         <span class="brand-name">DAQ<span>core</span></span>
       </div>
       <nav class="footer-links">
-        <a href="#ecosystem">Platform</a>
+        <a href="#">Platform</a>
         <a href="#capabilities">Capabilities</a>
         <a href="#stack">Stack</a>
         <a href="#security">Security</a>

@@ -320,6 +320,67 @@ ssh -J ssh.daqcore.com user@bench-07
 A full Layer-3 WireGuard overlay (arbitrary TCP/UDP to the device's LAN) is a later,
 optional tier. See [`remote-access.md`](remote-access.md) for details.
 
+### 4.9 Master / Slave — Develop at the Desk, Deploy to the Rig
+
+The same Edge Agent binary runs in two complementary modes, so automation can be developed
+on a desktop PC while the physical sensors stay connected to a Raspberry Pi in the rig.
+
+```
+┌──────────────┐   device I/O over gRPC/QUIC (LAN direct or via cloud)  ┌──────────────┐
+│  Desktop PC  │ ◀──────────────────────────────────────────────────────▶│  Raspberry Pi │
+│   (master)   │                                                         │   (slave)     │
+│              │      scripts · pipelines · devices (by ID only)         │               │
+│  develop &   │                                                         │  owns the     │
+│  iterate     │                                                         │  hardware     │
+└──────────────┘                                                         └──────────────┘
+```
+
+- **`slave` mode** — the agent on the rig owns the physical drivers (DAQ, power supplies,
+  PLCs) and exposes its device layer over the network. No business logic — it just serves
+  device I/O, like a remote instrument gateway.
+- **`master` mode** — the agent on the desktop resolves devices that live on a slave and
+  tunnels `Driver` calls to it. Scripts and pipelines run on the desktop against the rig's
+  *real* hardware while the engineer iterates.
+
+**Two transport paths** (same `Driver` interface, chosen per slave):
+
+1. **Local network — direct.** When the desktop and rig are on the same LAN, the master
+   connects straight to the slave's gRPC/QUIC endpoint. Zero-config **mDNS discovery**
+   (`rig-01.local`) means no IP addresses to configure; a static `host:port` also works.
+   Fully offline — no cloud involved.
+
+2. **Cloud proxy — remote.** When they are not on the same network, the master reaches the
+   slave through the agent's existing outbound tunnel to the cloud. Same API, different
+   transport, so the desktop can drive a rig on another site.
+
+**The key guarantee — no changes on deploy.** Devices are declared once by ID; scripts and
+pipelines reference device IDs only, never host locations. Where a device physically lives
+is a single runtime override:
+
+```toml
+# devices.toml (shared, identical on both machines)
+[[device]]
+id   = "chamber"
+type = "scpi"
+host = "rig-01"          # "rig-01" resolves to the slave; on the rig itself it is local
+port = 5025
+```
+
+```bash
+# Development — desktop drives the rig's hardware remotely
+daqcore-agent --mode master --slave rig-01.local          # LAN (mDNS discovery, direct)
+daqcore-agent --mode master --slave 192.168.1.20:7443     # LAN (static host:port, direct)
+daqcore-agent --mode master --slave rig-01                # remote site (via cloud proxy)
+
+# Deployment — run the identical config/scripts on the rig, standalone
+daqcore-agent --config daqcore.toml
+```
+
+A `RemoteDriver` proxy implements the same `Driver` trait as a local driver, so the whole
+stack (pipeline engine, script scheduler, WAL, sample management) is agnostic to whether a
+device is local or remote. One master can drive several slaves; a slave can still stream
+telemetry up to the cloud while being driven.
+
 ---
 
 ## 5. Project Directory Structure
@@ -336,6 +397,7 @@ DAQcore/
 │   ├── daqcore-pipeline/         # Automation pipes: source→transform→condition→action
 │   ├── daqcore-script/           # Test scripts: step scheduler, guards, recording
 │   ├── daqcore-sample/           # Sample lifecycle, software/calibration state, graveyard
+│   ├── daqcore-remote/           # Master/slave remote device proxy (RemoteDriver)
 │   ├── daqcore-transport/        # gRPC client/server codegen, Axum local REST/WebSocket
 │   └── daqcore-agent/            # Main edge daemon binary, config parser, orchestrator
 └── config/
