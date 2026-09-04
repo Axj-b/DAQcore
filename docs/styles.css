@@ -74,7 +74,7 @@ h1, h2, h3, h4 { font-family: 'Lexend', 'Manrope', sans-serif; letter-spacing: -
   display: flex; align-items: center; gap: 30px;
 }
 .brand { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 22px; }
-.brand-icon { height: 44px; width: auto; display: block; border-radius: 10px; }
+.brand-icon { height: 80px; width: auto; display: block; border-radius: 10px; }
 .brand-mark {
   width: 26px; height: 26px; display: grid; place-items: center; border-radius: 7px;
   background: linear-gradient(135deg, var(--accent), var(--accent-3)); color: #0d0d0d; font-size: 15px;
