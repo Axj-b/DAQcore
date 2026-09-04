@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DAQcore — The Test Data Spine</title>
+  <meta name="description" content="DAQcore is a high-performance, open-core platform for industrial test benches, hardware compliance labs, and durability testing. Instrument every bench for free." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="#">
+        <span class="brand-mark">&#9642;</span>
+        <span class="brand-name">DAQ<span>core</span></span>
+      </a>
+      <nav class="nav-links">
+        <a href="#platform">Platform</a>
+        <a href="#features">Features</a>
+        <a href="#pipelines">Pipelines</a>
+        <a href="#editions">Editions</a>
+        <a href="#marketplace">Marketplace</a>
+      </nav>
+      <div class="nav-cta">
+        <a class="btn btn-ghost" href="#editions">Docs</a>
+        <a class="btn btn-primary" href="#cta">Get Started</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-grid"></div>
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <div class="badge">Open-core · Apache-2.0 · Edge-native</div>
+          <h1>The <span class="accent">Test Data Spine</span> for the lab floor.</h1>
+          <p class="lead">
+            DAQcore turns chaotic raw sensor data from test benches, compliance labs, and
+            durability rigs into clear, actionable engineering insight — with a blazing-fast
+            Rust Edge Agent, offline-resilient buffering, and a real-time cloud dashboard.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary btn-lg" href="#cta">Start free on your edge</a>
+            <a class="btn btn-ghost btn-lg" href="#live">See the live demo</a>
+          </div>
+          <div class="hero-meta">
+            <span><strong>0€</strong> to instrument a bench</span>
+            <span class="dot">·</span>
+            <span><strong>50k+</strong> samples/sec</span>
+            <span class="dot">·</span>
+            <span><strong>Zero</strong> memory-leak reliability</span>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="dashboard">
+            <div class="dash-bar">
+              <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+              <span class="dash-title">durability-test-07 · thermal chamber</span>
+              <span class="dash-live">● LIVE</span>
+            </div>
+            <div class="dash-metrics">
+              <div class="metric">
+                <span class="metric-label">Chamber Temp</span>
+                <span class="metric-value" id="m-temp">85.0 °C</span>
+              </div>
+              <div class="metric">
+                <span class="metric-label">Rail Voltage</span>
+                <span class="metric-value" id="m-volt">24.00 V</span>
+              </div>
+              <div class="metric">
+                <span class="metric-label">Load Current</span>
+                <span class="metric-value" id="m-amp">3.210 A</span>
+              </div>
+            </div>
+            <canvas id="chart" width="600" height="220"></canvas>
+            <div class="dash-footer">
+              <span>12 channels · 1 kHz</span>
+              <span>WAL: 4.2 MB buffered</span>
+              <span>latency 8 ms</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PLATFORM -->
+    <section class="section" id="platform">
+      <div class="section-inner">
+        <h2>One spine, raw signal to insight</h2>
+        <p class="sub">
+          The unifying data layer for industrial measurement — from the sensor on the bench
+          to the report on an engineer's screen.
+        </p>
+        <div class="spine">
+          <div class="spine-step">
+            <div class="spine-icon">&#9670;</div>
+            <h3>Edge Agent</h3>
+            <p>Lightweight Rust daemon on a Raspberry Pi or industrial PC. Talks to DAQ devices, power supplies, and PLCs — no cloud required.</p>
+          </div>
+          <div class="spine-arrow">&rarr;</div>
+          <div class="spine-step">
+            <div class="spine-icon">&#9783;</div>
+            <h3>Crash-Safe Buffer</h3>
+            <p>Local write-ahead log survives network drops and power cuts. Data keeps flowing; nothing is lost.</p>
+          </div>
+          <div class="spine-arrow">&rarr;</div>
+          <div class="spine-step">
+            <div class="spine-icon">&#8644;</div>
+            <h3>Fast Transport</h3>
+            <p>Ultra-low-latency gRPC/QUIC streaming of telemetry up, and remote commands back down.</p>
+          </div>
+          <div class="spine-arrow">&rarr;</div>
+          <div class="spine-step">
+            <div class="spine-icon">&#9636;</div>
+            <h3>Cloud &amp; Console</h3>
+            <p>Real-time multi-tenant dashboards, logging, and remote control for durability tests across global fleets.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="section section-alt" id="features">
+      <div class="section-inner">
+        <h2>Built for the bench, not the browser</h2>
+        <p class="sub">No clunky laggy web software. No writing custom code for every machine.</p>
+        <div class="grid">
+          <div class="card">
+            <h3>Pluggable Drivers</h3>
+            <p>SCPI/VISA, Modbus TCP/RTU, and OPC UA out of the box — plus a synthetic mock bench for testing with zero hardware.</p>
+            <code>driver: scpi / modbus / opcua</code>
+          </div>
+          <div class="card">
+            <h3>Zero Memory Leaks</h3>
+            <p>Deterministic allocation, bounded ring buffers, and pre-allocated batches keep long-running tests stable for months.</p>
+            <code>--check-mem: no leaks</code>
+          </div>
+          <div class="card">
+            <h3>Offline Resilient</h3>
+            <p>Local WAL buffer keeps every sample through network outages, then catches up automatically on reconnect.</p>
+            <code>wal: sync_data · crc32</code>
+          </div>
+          <div class="card">
+            <h3>High Throughput</h3>
+            <p>Lockless channels stream 50k+ samples/sec with sub-millisecond jitter from device to dashboard.</p>
+            <code>50k samples/s · 8 ms</code>
+          </div>
+          <div class="card">
+            <h3>Remote Control</h3>
+            <p>Abort a test, change a setpoint, or trigger a relay from anywhere — through a secure bidirectional stream.</p>
+            <code>set_voltage 24.0 → OK</code>
+          </div>
+          <div class="card">
+            <h3>Compliance Ready</h3>
+            <p>Audit trails, report packs, and retention policies built for hardware compliance labs and durability certification.</p>
+            <code>audit: enabled</code>
+          </div>
+          <div class="card">
+            <h3>Automation Pipes</h3>
+            <p>Compose declarative pipelines — source → transform → condition → action — to react to signals instantly.</p>
+            <code>temp > 90°C → trip relay</code>
+          </div>
+          <div class="card">
+            <h3>Fleet Deployment</h3>
+            <p>Author a pipe once in the cloud and deploy it to hundreds of devices, with versioning and rollback.</p>
+            <code>deploy → 128 devices</code>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AUTOMATION PIPELINES -->
+    <section class="section" id="pipelines">
+      <div class="section-inner">
+        <h2>Automate on the edge. Scale from the cloud.</h2>
+        <p class="sub">Configure an automation pipe directly on a device — or author it centrally and roll it out to an entire fleet.</p>
+        <div class="pipe-grid">
+          <div class="pipe-col">
+            <div class="pipe-head"><span class="pipe-num">01</span><h3>On the edge</h3></div>
+            <p>Build a pipe locally via config file, local UI, or REST API. It runs fully offline — no cloud required.</p>
+            <div class="pipe-flow">
+              <span class="pf">source</span><span class="pf-arrow">→</span>
+              <span class="pf">transform</span><span class="pf-arrow">→</span>
+              <span class="pf">condition</span><span class="pf-arrow">→</span>
+              <span class="pf pf-action">action</span>
+            </div>
+            <code class="pipe-code">temp &gt; 90 °C → trip relay</code>
+          </div>
+          <div class="pipe-col">
+            <div class="pipe-head"><span class="pipe-num">02</span><h3>In the cloud → fleet</h3></div>
+            <p>Author and version pipes in the DAQcore Console, then deploy to one or many devices with drift detection and rollback.</p>
+            <div class="pipe-devices">
+              <span class="pd">bench-01</span><span class="pd">bench-02</span><span class="pd">bench-03</span>
+              <span class="pd">bench-04</span><span class="pd">bench-05</span><span class="pd pd-more">…</span>
+              <span class="pd pd-more">+122</span>
+            </div>
+            <code class="pipe-code">deploy pipe:v3 → 128 devices ✓</code>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LIVE DEMO -->
+    <section class="section" id="live">
+      <div class="section-inner">
+        <h2>Watch the Mock Bench run</h2>
+        <p class="sub">A synthetic thermal chamber with a DC rail, streamed live — no hardware attached.</p>
+        <div class="live-frame">
+          <canvas id="chart2" width="1100" height="280"></canvas>
+        </div>
+        <div class="live-tags">
+          <span class="tag">temp setpoint: 85 °C</span>
+          <span class="tag">rail: 24 V</span>
+          <span class="tag">load sweep: 0–5 A</span>
+          <span class="tag">noise + drift: on</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- EDITIONS -->
+    <section class="section section-alt" id="editions">
+      <div class="section-inner">
+        <h2>Open core, fair pricing</h2>
+        <p class="sub">Instrument every bench for free. Pay only when you want the managed cloud or enterprise features.</p>
+        <div class="pricing">
+          <div class="plan">
+            <h3>Free Edge</h3>
+            <div class="price">€0</div>
+            <p class="plan-desc">Forever. No cloud, no account, no license.</p>
+            <ul>
+              <li>Edge Agent + local dashboard</li>
+              <li>Offline buffering</li>
+              <li>All core drivers</li>
+              <li>Local remote control API</li>
+            </ul>
+            <a class="btn btn-ghost btn-block" href="#cta">Get the agent</a>
+          </div>
+          <div class="plan plan-featured">
+            <div class="plan-flag">Most popular</div>
+            <h3>DAQcore Cloud</h3>
+            <div class="price">€/device<span class="per">· mo</span></div>
+            <p class="plan-desc">Managed multi-tenant PaaS for global fleets.</p>
+            <ul>
+              <li>Real-time telemetry &amp; dashboards</li>
+              <li>Multi-tenant, RBAC, SSO</li>
+              <li>Retention &amp; policy engine</li>
+              <li>Compliance report packs</li>
+              <li>24/7 support</li>
+            </ul>
+            <a class="btn btn-primary btn-block" href="#cta">Start free trial</a>
+          </div>
+          <div class="plan">
+            <h3>Enterprise</h3>
+            <div class="price">Custom</div>
+            <p class="plan-desc">Self-hosted, air-gapped, compliance-grade.</p>
+            <ul>
+              <li>On-prem / private cloud</li>
+              <li>HA clustering</li>
+              <li>Advanced analytics</li>
+              <li>Audit &amp; certification</li>
+            </ul>
+            <a class="btn btn-ghost btn-block" href="#cta">Talk to us</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MARKETPLACE -->
+    <section class="section" id="marketplace">
+      <div class="section-inner">
+        <h2>A marketplace for drivers &amp; connectors</h2>
+        <p class="sub">Install versioned bundles — protocol drivers, cloud connectors, report templates — with a single command.</p>
+        <div class="mkt">
+          <div class="mkt-item"><span class="mkt-icon">&#9878;</span><div><strong>Keysight SCPI</strong><span>Power supply &amp; DMM driver</span></div><span class="mkt-badge">free</span></div>
+          <div class="mkt-item"><span class="mkt-icon">&#9878;</span><div><strong>Modbus RTU</strong><span>PLC &amp; meter register driver</span></div><span class="mkt-badge">free</span></div>
+          <div class="mkt-item"><span class="mkt-icon">&#9878;</span><div><strong>OPC UA Node</strong><span>Subscription-based monitor</span></div><span class="mkt-badge">free</span></div>
+          <div class="mkt-item"><span class="mkt-icon">&#9878;</span><div><strong>VDE Report Pack</strong><span>Compliance report templates</span></div><span class="mkt-badge mkt-paid">paid</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section cta" id="cta">
+      <div class="section-inner cta-inner">
+        <h2>Instrument your first bench in minutes.</h2>
+        <p>Install the free Edge Agent on any Raspberry Pi or industrial PC. No cloud required.</p>
+        <div class="cta-code">
+          <code>curl -sSL https://daqcore.dev/install | sh</code>
+          <button class="btn btn-primary btn-sm" id="copy">Copy</button>
+        </div>
+        <p class="cta-note">Apache-2.0 licensed. Runs standalone or connects to DAQcore Cloud.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="brand footer-brand">
+        <span class="brand-mark">&#9642;</span>
+        <span class="brand-name">DAQ<span>core</span></span>
+      </div>
+      <nav class="footer-links">
+        <a href="#platform">Platform</a>
+        <a href="#features">Features</a>
+        <a href="#pipelines">Pipelines</a>
+        <a href="#editions">Editions</a>
+        <a href="#marketplace">Marketplace</a>
+      </nav>
+      <p class="footer-copy">© 2026 DAQcore — The Test Data Spine.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
