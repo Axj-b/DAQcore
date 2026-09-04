@@ -5,17 +5,54 @@ pipeline stages.
 
 ---
 
-## 1. Deployment on Raspberry Pi / Industrial PC
+## 1. Deployment — Windows, Raspberry Pi, Industrial PC
 
-The Edge Agent is a **single static binary** (`daqcore-agent`), cross-compiled for `arm64`
-(Raspberry Pi) and `x86_64` (industrial PC). No runtime dependencies.
+The Edge Agent is a **single static binary** (`daqcore-agent`) and is fully cross-platform.
+It runs natively on:
+
+| Platform | Arch | Packaging |
+| --- | --- | --- |
+| Windows | x86_64 | `.exe` / `.msi`, runs as a Windows service |
+| Linux (Raspberry Pi) | arm64 | `.deb`, runs as a `systemd` service |
+| Linux (industrial PC) | x86_64 | `.deb` / binary, runs as a `systemd` service |
+| Docker / Podman | amd64 / arm64 | OCI image |
+| macOS | arm64 / x86_64 | dev tooling |
+
+No runtime dependencies. The same drivers, WAL, pipelines, scripts, and sample management
+work everywhere; only packaging and device-path naming differ (`COM3` on Windows vs
+`/dev/ttyUSB0` on Linux).
 
 ```bash
-# Raspberry Pi (arm64) or PC (x86_64)
-curl -sSL https://daqcore.dev/install | sh        # or apt install / docker pull
+# Linux (Raspberry Pi / PC)
+curl -sSL https://daqcore.com/install | sh        # or apt install / docker pull
 daqcore-agent --config daqcore.toml               # run in foreground
 systemctl enable daqcore-agent                    # or run as a systemd service
+
+# Windows (PowerShell)
+daqcore-agent.exe --config daqcore.toml
+sc.exe create daqcore-agent binPath= "C:\daqcore\daqcore-agent.exe --config C:\daqcore\daqcore.toml"
 ```
+
+### Docker
+
+The agent ships as a multi-arch OCI image (`amd64` / `arm64`); the self-hostable platform
+services (ingest, storage, API, console) ship as a `docker compose` stack.
+
+```bash
+# Edge agent in a container
+docker run -d --name daqcore-agent \
+  --network host \                    # simplifies device/PLC reachability on Linux
+  -v ./config:/etc/daqcore:ro \
+  -v daqcore-wal:/var/lib/daqcore/wal \
+  ghcr.io/daqcore/agent:latest --config /etc/daqcore/daqcore.toml
+
+# Full self-hosted platform (ingest + storage + console)
+git clone https://github.com/daqcore/deploy && cd deploy
+docker compose up -d
+```
+
+Notes: use `--network host` (Linux) when the agent must reach instruments/PLCs on the local
+LAN; on Windows/macOS use explicit port mappings and the host gateway for TCP devices.
 
 All behavior comes from a **config file** — devices, channels, sampling rates, pipelines,
 endpoints:
@@ -40,7 +77,7 @@ host = "192.168.1.10"
 wal_dir = "/var/lib/daqcore/wal"
 
 [upstream]
-cloud_url = "grpcs://cloud.daqcore.dev"   # optional; omit for fully offline
+cloud_url = "grpcs://cloud.daqcore.com"   # optional; omit for fully offline
 ```
 
 Once running, interact via three surfaces:

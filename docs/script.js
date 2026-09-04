@@ -27,11 +27,11 @@ function setupChart(canvas, series) {
 
   function draw() {
     ctx.clearRect(0, 0, width, height);
-    ctx.fillStyle = '#0c1526';
+    ctx.fillStyle = '#141414';
     ctx.fillRect(0, 0, width, height);
 
     // grid
-    ctx.strokeStyle = 'rgba(29,42,66,0.5)';
+    ctx.strokeStyle = 'rgba(42,42,42,0.5)';
     ctx.lineWidth = 1;
     for (let y = 0; y <= 4; y++) {
       ctx.beginPath();
@@ -74,39 +74,21 @@ function setupChart(canvas, series) {
   return { canvas };
 }
 
-// Hero mini chart
-const heroSeries = [
-  { base: 85, amp: 2.2, noise: 1.4, min: 70, max: 95, speed: 0.05, color: '#22d3ee' },   // temp
-  { base: 24, amp: 0.4, noise: 0.5, min: 20, max: 28, speed: 0.04, color: '#34d399' },   // voltage
-  { base: 3.2, amp: 1.5, noise: 0.6, min: 0, max: 6, speed: 0.06, color: '#a78bfa' },    // current
-];
-setupChart(document.getElementById('chart'), heroSeries);
-
-// Live demo chart
+// Live demo charts (security + live sections)
 const liveSeries = [
-  { base: 85, amp: 4, noise: 3, min: 60, max: 105, speed: 0.03, color: '#22d3ee' },
+  { base: 85, amp: 4, noise: 3, min: 60, max: 105, speed: 0.03, color: '#d9ff00' },
   { base: 24, amp: 1, noise: 1, min: 18, max: 30, speed: 0.025, color: '#34d399' },
-  { base: 3.2, amp: 3, noise: 1.4, min: 0, max: 7, speed: 0.035, color: '#a78bfa' },
+  { base: 3.2, amp: 3, noise: 1.4, min: 0, max: 7, speed: 0.035, color: '#7f56d9' },
 ];
-setupChart(document.getElementById('chart2'), liveSeries);
-
-// Live metric readouts (hero)
-const temp = document.getElementById('m-temp');
-const volt = document.getElementById('m-volt');
-const amp = document.getElementById('m-amp');
-setInterval(() => {
-  const t = (85 + Math.sin(Date.now() / 1200) * 2 + (Math.random() - 0.5)).toFixed(1);
-  const v = (24 + Math.sin(Date.now() / 1600) * 0.4 + (Math.random() - 0.5) * 0.3).toFixed(2);
-  const a = (3.2 + Math.sin(Date.now() / 900) * 1.5 + (Math.random() - 0.5) * 0.5).toFixed(3);
-  temp.textContent = t + ' °C';
-  volt.textContent = v + ' V';
-  amp.textContent = a + ' A';
-}, 500);
+['chart2', 'chart2b'].forEach((id) => {
+  const el = document.getElementById(id);
+  if (el) setupChart(el, liveSeries);
+});
 
 // Copy command button
 const copyBtn = document.getElementById('copy');
 copyBtn.addEventListener('click', () => {
-  const cmd = 'curl -sSL https://daqcore.dev/install | sh';
+  const cmd = 'curl -sSL https://daqcore.com/install | sh';
   navigator.clipboard.writeText(cmd).then(() => {
     copyBtn.textContent = 'Copied ✓';
     setTimeout(() => (copyBtn.textContent = 'Copy'), 1600);

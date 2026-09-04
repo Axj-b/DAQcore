@@ -95,9 +95,10 @@ connectors, report templates, analytics packs, compliance certifications.
 
 ## 6. Open Questions (deferred)
 
-- **Product pillars** — the core data domains for DAQcore. Draft candidates: Device/Asset
-  Management, Channel/Point Configuration, Time-Series & Test Artifacts, Dashboards &
-  Reporting. To be finalized.
+- **Product pillars** — the core data domains for DAQcore. Confirmed so far: **Sample &
+  Unit Management** (unit lifecycle, software & calibration state, graveyard — see
+  [`sample-management.md`](sample-management.md)). Remaining candidates to finalize:
+  Channel/Point Configuration, Time-Series & Test Artifacts, Dashboards & Reporting.
 - **Cloud specifics** — exact provider, storage engine (TimescaleDB vs ClickHouse), metering
   model.
 - **Marketplace depth** — registry + storefront scope and launch timing.

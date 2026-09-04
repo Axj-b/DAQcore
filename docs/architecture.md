@@ -1,7 +1,7 @@
 # DAQcore — Architecture & Design Document
 
 > A high-performance, edge-to-cloud framework for industrial test benches, hardware
-> compliance labs (e.g. VDE), and durability testing.
+> compliance labs, and durability testing.
 >
 > DAQcore turns chaotic raw sensor data into clear, actionable engineering insight.
 
@@ -10,6 +10,11 @@ Related documents:
 - [`platform-strategy.md`](platform-strategy.md) — open-core business model & editions
 - [`extensibility.md`](extensibility.md) — deployment, drivers, plugins & custom devices
 - [`radar-test-station.md`](radar-test-station.md) — worked example: a real radar test station
+- [`calibration-station.md`](calibration-station.md) — worked example: a metrology/calibration station
+- [`sample-management.md`](sample-management.md) — tracking every unit under test: lifecycle, software & calibration state, graveyard
+- [`remote-access.md`](remote-access.md) — Secure Shell over the cloud: audited SSH via the agent's outbound tunnel
+- [`roadmap.md`](roadmap.md) — prioritized feature backlog (P0 → P3)
+- [`compliance.md`](compliance.md) — CRA, GDPR, and certification (CE out of scope)
 
 ---
 
@@ -273,6 +278,48 @@ offline if the cloud drops.
 A full compliance run is: `script` (the procedure) + `pipelines` (the guards) + `recording`
 (the evidence) — all as versioned artifacts that can be shared via the marketplace.
 
+### 4.7 Sample Management (`daqcore-sample`)
+
+Sample Management gives every physical unit under test a persistent identity and an
+immutable, append-only history: what was done to it, what software it runs, and its
+calibration state — from arrival to retirement.
+
+- **Lifecycle state machine** — `received → in-test → calibrated → released`, with
+  `quarantined` for failures and a terminal, read-only `graveyard` for retired units.
+- **Software state** — firmware version + image hash recorded on every flash, so results are
+  attributable to the exact software state.
+- **Calibration linkage** — a completed calibration run updates the sample's calibration
+  state and due date automatically.
+- **Provenance** — every test run, flash, and calibration appends an event; the full history
+  is retained even after a unit is scrapped.
+- **Storage** — edge-local records (offline-capable) replicate to the cloud into a global
+  multi-tenant sample registry.
+
+See [`sample-management.md`](sample-management.md) for the full model and examples.
+
+### 4.8 Remote Access (Secure Shell)
+
+Engineers can reach an edge device (and its lab LAN) remotely **without opening any inbound
+ports** and without installing a VPN client. The agent's existing outbound tunnel is reused
+as the data path:
+
+```
+engineer ──ssh──▶ ssh.daqcore.com ──(agent outbound tunnel)──▶ device sshd :22
+```
+
+- **Cloud SSH gateway** authenticates the user (SSO/keys) and maps them to tenant + device.
+- **Agent** bridges the proxied bytes to the device's local `sshd`.
+- Sessions transit the cloud, enabling **audit & session logging** — a strong compliance
+  feature. No lab firewall changes; central revocation from the console.
+
+```bash
+ssh bench-07@ssh.daqcore.com        # routes to device "bench-07"
+ssh -J ssh.daqcore.com user@bench-07
+```
+
+A full Layer-3 WireGuard overlay (arbitrary TCP/UDP to the device's LAN) is a later,
+optional tier. See [`remote-access.md`](remote-access.md) for details.
+
 ---
 
 ## 5. Project Directory Structure
@@ -288,6 +335,7 @@ DAQcore/
 │   ├── daqcore-wal/              # Disk ring buffer, segmented WAL, recovery cursor
 │   ├── daqcore-pipeline/         # Automation pipes: source→transform→condition→action
 │   ├── daqcore-script/           # Test scripts: step scheduler, guards, recording
+│   ├── daqcore-sample/           # Sample lifecycle, software/calibration state, graveyard
 │   ├── daqcore-transport/        # gRPC client/server codegen, Axum local REST/WebSocket
 │   └── daqcore-agent/            # Main edge daemon binary, config parser, orchestrator
 └── config/
