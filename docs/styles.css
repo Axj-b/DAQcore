@@ -70,10 +70,11 @@ h1, h2, h3, h4 { font-family: 'Lexend', 'Manrope', sans-serif; letter-spacing: -
   border-bottom: 1px solid var(--border-soft);
 }
 .nav-inner {
-  max-width: var(--maxw); margin: 0 auto; padding: 14px 28px;
+  max-width: var(--maxw); margin: 0 auto; padding: 10px 28px;
   display: flex; align-items: center; gap: 30px;
 }
-.brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 19px; }
+.brand { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 22px; }
+.brand-icon { height: 44px; width: auto; display: block; border-radius: 10px; }
 .brand-mark {
   width: 26px; height: 26px; display: grid; place-items: center; border-radius: 7px;
   background: linear-gradient(135deg, var(--accent), var(--accent-3)); color: #0d0d0d; font-size: 15px;
