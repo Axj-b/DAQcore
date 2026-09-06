@@ -9,9 +9,94 @@
   <body>
     <header class="topbar">
       <div class="brand">DAQcore</div>
+      <nav class="tabs" id="tabs">
+        <button data-tab="live" class="active">Live</button>
+        <button data-tab="devices">Devices</button>
+        <button data-tab="system">System</button>
+        <button data-tab="scripts">Scripts</button>
+        <button data-tab="plugins">Plugins</button>
+      </nav>
       <div class="status" id="status">connecting…</div>
     </header>
-    <main id="charts"></main>
+
+    <main>
+      <section id="view-live" class="view active">
+        <div id="charts"></div>
+      </section>
+
+      <section id="view-devices" class="view">
+        <div class="grid">
+          <div class="panel">
+            <h2>Devices</h2>
+            <div class="table-wrap">
+              <table id="device-table">
+                <thead>
+                  <tr><th>ID</th><th>Type</th><th>Status</th><th>Channels</th></tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="panel">
+            <h2>Manual I/O</h2>
+            <label class="field">
+              <span>Device</span>
+              <select id="io-device"></select>
+            </label>
+            <div class="row">
+              <button id="io-sample">Read sample</button>
+            </div>
+            <div class="row">
+              <input id="io-op" placeholder="command op (e.g. *IDN?)" />
+              <button id="io-send">Send</button>
+            </div>
+            <pre id="io-result" class="result"></pre>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>Add device</h2>
+          <p class="hint">Paste a device definition as JSON (type "mock" supported).</p>
+          <textarea id="add-device-json" rows="6" spellcheck="false"></textarea>
+          <div class="row">
+            <button id="add-device-btn">Add device</button>
+          </div>
+          <pre id="add-device-result" class="result"></pre>
+        </div>
+      </section>
+
+      <section id="view-system" class="view">
+        <div class="panel">
+          <h2>System resources</h2>
+          <div class="meter">
+            <label>CPU</label>
+            <div class="bar"><div id="cpu-bar" class="bar-fill"></div></div>
+            <span id="cpu-val" class="meter-val">—</span>
+          </div>
+          <div class="meter">
+            <label>Memory</label>
+            <div class="bar"><div id="mem-bar" class="bar-fill"></div></div>
+            <span id="mem-val" class="meter-val">—</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="view-scripts" class="view">
+        <div class="panel">
+          <h2>Scripts</h2>
+          <p class="hint">Declarative test scripts (set/ramp/dwell/loop) are coming in a later milestone.</p>
+        </div>
+      </section>
+
+      <section id="view-plugins" class="view">
+        <div class="panel">
+          <h2>Plugins</h2>
+          <p class="hint">Loadable driver/connector bundles are coming in a later milestone.</p>
+        </div>
+      </section>
+    </main>
+
     <footer id="metrics" class="metrics"></footer>
     <script type="module" src="/src/main.js"></script>
   </body>

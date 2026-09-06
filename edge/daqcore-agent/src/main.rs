@@ -2,7 +2,7 @@
 // Copyright 2026 DAQcore contributors
 
 //! DAQcore edge agent: sample configured drivers into a crash-safe local WAL,
-//! and expose a local control plane (REST + WebSocket) for the dashboard.
+//! and expose a local control plane (REST + WebSocket + dashboard) for the UI.
 
 use std::fs;
 use std::path::PathBuf;
@@ -19,8 +19,10 @@ use tracing::{debug, error, info};
 use tracing_subscriber::EnvFilter;
 
 mod config;
+mod devices;
 mod server;
 use config::Config;
+use devices::DeviceManager;
 use server::AppState;
 
 #[derive(Parser, Debug)]
@@ -80,9 +82,9 @@ async fn run() -> Result<()> {
         return Err(Error::Config("no devices configured".into()));
     }
 
-    // Connect every driver and collect its metadata for the API.
-    let mut metadata = Vec::with_capacity(drivers.len());
-    for driver in &mut drivers {
+    // Connect every driver and register it in the runtime device manager.
+    let manager = Arc::new(std::sync::Mutex::new(DeviceManager::new()));
+    for mut driver in drivers {
         driver.connect().await?;
         let m = driver.metadata();
         info!(
@@ -91,7 +93,8 @@ async fn run() -> Result<()> {
             channels = ?m.channels,
             "driver connected"
         );
-        metadata.push(m);
+        let shared = Arc::new(Mutex::new(driver));
+        manager.lock().unwrap().insert(m.id.clone(), m, shared);
     }
 
     // Open the WAL (shared behind a mutex so the API can read the cursor too).
@@ -109,10 +112,11 @@ async fn run() -> Result<()> {
     let state = AppState {
         name: config.agent.name.clone(),
         started: Instant::now(),
-        drivers: metadata,
+        devices: manager.clone(),
         wal: wal.clone(),
         live_tx: live_tx.clone(),
         total_samples: total_samples.clone(),
+        sys: Arc::new(Mutex::new(sysinfo::System::new_all())),
     };
     let listen_addr: std::net::SocketAddr = config
         .server
@@ -154,10 +158,12 @@ async fn run() -> Result<()> {
             }
             // Every interval: read all drivers, then drain full batches to the WAL.
             _ = tick.tick() => {
-                for driver in &mut drivers {
+                let snapshot = manager.lock().unwrap().shared_drivers();
+                for (id, shared) in snapshot {
+                    let mut driver = shared.lock().await;
                     match driver.sample().await {
                         Ok(mut samples) => accum.append(&mut samples),
-                        Err(e) => error!(error = %e, "sample failed"),
+                        Err(e) => error!(device = %id, error = %e, "sample failed"),
                     }
                 }
 
