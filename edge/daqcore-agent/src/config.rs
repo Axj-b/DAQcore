@@ -18,11 +18,27 @@ pub struct Config {
     pub storage: StorageSection,
     #[serde(default)]
     pub sampling: SamplingSection,
+    #[serde(default)]
+    pub server: ServerSection,
 }
 
 #[derive(Debug, Deserialize)]
 pub struct AgentSection {
     pub name: String,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct ServerSection {
+    #[serde(default = "default_listen_addr")]
+    pub listen_addr: String,
+}
+
+impl Default for ServerSection {
+    fn default() -> Self {
+        Self {
+            listen_addr: default_listen_addr(),
+        }
+    }
 }
 
 #[derive(Debug, Deserialize)]
@@ -85,4 +101,8 @@ fn default_interval_ms() -> u64 {
 
 fn default_batch_size() -> usize {
     100
+}
+
+fn default_listen_addr() -> String {
+    "0.0.0.0:8080".to_string()
 }
