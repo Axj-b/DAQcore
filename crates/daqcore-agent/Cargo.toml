@@ -1,0 +1,22 @@
+[package]
+name = "daqcore-agent"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+
+[[bin]]
+name = "daqcore-agent"
+path = "src/main.rs"
+
+[dependencies]
+daqcore-core.workspace = true
+daqcore-driver.workspace = true
+daqcore-wal.workspace = true
+serde.workspace = true
+tokio.workspace = true
+clap.workspace = true
+toml.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true

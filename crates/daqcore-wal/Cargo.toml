@@ -1,0 +1,13 @@
+[package]
+name = "daqcore-wal"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+
+[dependencies]
+daqcore-core.workspace = true
+serde.workspace = true
+postcard.workspace = true
+crc32fast.workspace = true

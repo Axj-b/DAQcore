@@ -1,0 +1,34 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/daqcore-core",
+    "crates/daqcore-driver",
+    "crates/daqcore-wal",
+    "crates/daqcore-agent",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+authors = ["DAQcore contributors"]
+repository = "https://github.com/Axj-b/DAQcore"
+
+[workspace.dependencies]
+daqcore-core = { path = "crates/daqcore-core", version = "0.1.0" }
+daqcore-driver = { path = "crates/daqcore-driver", version = "0.1.0" }
+daqcore-wal = { path = "crates/daqcore-wal", version = "0.1.0" }
+serde = { version = "1", features = ["derive"] }
+postcard = { version = "1", features = ["alloc"] }
+crc32fast = "1"
+thiserror = "2"
+async-trait = "0.1"
+tokio = { version = "1", features = ["full"] }
+clap = { version = "4", features = ["derive"] }
+toml = "0.8"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+fastrand = "2"
+
+[profile.release]
+lto = "thin"

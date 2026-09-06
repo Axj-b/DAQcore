@@ -1,0 +1,27 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug daqcore-agent (CodeLLDB)",
+      "cargo": {
+        "args": ["build", "--package", "daqcore-agent", "--bin", "daqcore-agent"],
+        "filter": { "name": "daqcore-agent", "kind": "bin" }
+      },
+      "args": ["--config", "config/default.toml"],
+      "cwd": "${workspaceFolder}",
+      "sourceLanguages": ["rust"]
+    },
+    {
+      "type": "cppvsdbg",
+      "request": "launch",
+      "name": "Debug daqcore-agent (VS Debugger)",
+      "program": "${workspaceFolder}/target/debug/daqcore-agent.exe",
+      "args": ["--config", "config/default.toml"],
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "cargo build",
+      "console": "integratedTerminal"
+    }
+  ]
+}

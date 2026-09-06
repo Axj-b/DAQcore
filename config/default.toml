@@ -1,0 +1,54 @@
+# DAQcore edge agent — example configuration
+# Run with: daqcore-agent --config config/default.toml
+
+[agent]
+name = "bench-07"
+
+[storage]
+wal_dir = "./wal"
+segment_size_bytes = 67108864 # 64 MiB
+durability = "sync_data"      # sync_all | sync_data | none | interval
+fsync_interval_ms = 1000      # used only when durability = "interval"
+
+[sampling]
+interval_ms = 100
+batch_size = 100
+
+# Synthetic thermal chamber (no physical hardware needed).
+[[device]]
+id = "chamber"
+type = "mock"
+
+[[device.channels]]
+id = "chamber.temp"
+unit = "degC"
+
+[device.channels.signal]
+kind = "thermal"
+ambient = 40.0
+amplitude = 20.0
+period_secs = 60.0
+
+# DC power supply voltage sweep.
+[[device]]
+id = "psu"
+type = "mock"
+
+[[device.channels]]
+id = "rail.voltage"
+unit = "V"
+
+[device.channels.signal]
+kind = "dc_sweep"
+start = 0.0
+end = 24.0
+period_secs = 120.0
+
+[[device.channels]]
+id = "rail.current"
+unit = "A"
+
+[device.channels.signal]
+kind = "noise"
+mean = 2.0
+stddev = 0.1
