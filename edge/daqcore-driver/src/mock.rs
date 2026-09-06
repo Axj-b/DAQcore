@@ -12,7 +12,7 @@ use daqcore_core::{Command, CommandResponse, Result, Sample, Timestamp, Value};
 use fastrand::Rng;
 use serde::{Deserialize, Serialize};
 
-use crate::{Driver, DriverMetadata};
+use crate::{ChannelInfo, Driver, DriverMetadata};
 
 /// The waveform a mock channel generates.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -177,7 +177,15 @@ impl Driver for SyntheticMockBench {
         DriverMetadata {
             id: self.config.id.clone(),
             kind: "mock".to_string(),
-            channels: self.config.channels.iter().map(|c| c.id.clone()).collect(),
+            channels: self
+                .config
+                .channels
+                .iter()
+                .map(|c| ChannelInfo {
+                    id: c.id.clone(),
+                    unit: c.unit.clone(),
+                })
+                .collect(),
         }
     }
 }

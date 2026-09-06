@@ -83,3 +83,10 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+### Node
+node_modules/
+
+# The dashboard build output is embedded into the agent binary, so it is committed
+# (un-ignores the generic `dist/` rule above).
+!edge/dashboard/dist/

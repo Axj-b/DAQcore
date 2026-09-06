@@ -1,0 +1,113 @@
+:root {
+  --bg: #0d1117;
+  --panel: #141a22;
+  --border: #232b36;
+  --text: #c9d1d9;
+  --dim: #8b949e;
+  --accent: #44cee8;
+  --ok: #3fb950;
+  --err: #f85149;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 14px;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  z-index: 10;
+}
+
+.brand {
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.brand::before {
+  content: "";
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  vertical-align: middle;
+}
+
+.status {
+  color: var(--dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.status.ok::before {
+  content: "● ";
+  color: var(--ok);
+}
+
+.status.err::before {
+  content: "● ";
+  color: var(--err);
+}
+
+#charts {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+}
+
+.chart {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px;
+}
+
+.chart-head {
+  color: var(--accent);
+  font-size: 12px;
+  margin: 0 4px 4px;
+  font-variant-numeric: tabular-nums;
+}
+
+.chart-body {
+  overflow: hidden;
+}
+
+.metrics {
+  position: sticky;
+  bottom: 0;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  padding: 8px 16px;
+  color: var(--dim);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  overflow-x: auto;
+}
+
+.metrics b {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.uplot .u-title {
+  display: none;
+}

@@ -14,12 +14,20 @@ use async_trait::async_trait;
 use daqcore_core::{Command, CommandResponse, Result, Sample};
 use serde::{Deserialize, Serialize};
 
+/// One channel exposed by a driver.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ChannelInfo {
+    pub id: String,
+    #[serde(default)]
+    pub unit: String,
+}
+
 /// Static description of a driver: what it is called and which channels it exposes.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DriverMetadata {
     pub id: String,
     pub kind: String,
-    pub channels: Vec<String>,
+    pub channels: Vec<ChannelInfo>,
 }
 
 /// The contract every hardware driver implements.

@@ -1,25 +1,32 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2026 DAQcore contributors
 
-//! Local control plane: Axum REST + WebSocket endpoints for the embedded
-//! dashboard, the CLI, and (later) the cloud — all speaking the same `/api/v1`
-//! contract.
+//! Local control plane: Axum REST + WebSocket endpoints plus the embedded
+//! dashboard, all speaking the same `/api/v1` contract.
 
 use std::sync::atomic::{AtomicU64, Ordering};
 use std::sync::Arc;
 use std::time::Instant;
 
+use axum::body::Body;
 use axum::extract::ws::{Message, WebSocket, WebSocketUpgrade};
 use axum::extract::State;
-use axum::response::Response;
+use axum::http::{StatusCode, Uri};
+use axum::response::{IntoResponse, Response};
 use axum::routing::get;
 use axum::{Json, Router};
-use daqcore_core::SampleBatch;
+use daqcore_core::{SampleBatch, Value};
 use daqcore_driver::DriverMetadata;
 use daqcore_wal::Wal;
 use futures_util::{SinkExt, StreamExt};
+use rust_embed::Embed;
 use serde::Serialize;
 use tokio::sync::{broadcast, Mutex};
+
+/// The built dashboard bundle, embedded into the binary at compile time.
+#[derive(Embed)]
+#[folder = "../dashboard/dist/"]
+struct Assets;
 
 /// Shared state handed to every request handler.
 #[derive(Clone)]
@@ -32,19 +39,15 @@ pub struct AppState {
     pub total_samples: Arc<AtomicU64>,
 }
 
-/// Build the router with all `/api/v1` routes.
+/// Build the router: API routes plus a fallback serving the embedded SPA.
 pub fn router(state: AppState) -> Router {
     Router::new()
-        .route("/", get(index))
         .route("/api/v1/health", get(health))
         .route("/api/v1/drivers", get(drivers))
         .route("/api/v1/metrics", get(metrics))
         .route("/api/v1/live", get(live))
+        .fallback(static_handler)
         .with_state(state)
-}
-
-async fn index() -> &'static str {
-    "DAQcore edge agent — /api/v1/health /api/v1/drivers /api/v1/metrics (WS: /api/v1/live)"
 }
 
 #[derive(Serialize)]
@@ -103,6 +106,28 @@ async fn live(ws: WebSocketUpgrade, State(s): State<AppState>) -> Response {
     ws.on_upgrade(move |socket| live_stream(socket, s))
 }
 
+/// JS-safe sample: timestamps as milliseconds (f64), numeric values only.
+#[derive(Serialize)]
+struct LiveSample {
+    ts_ms: f64,
+    channel: String,
+    value: f64,
+}
+
+#[derive(Serialize)]
+struct LiveBatch {
+    seq: u64,
+    samples: Vec<LiveSample>,
+}
+
+fn numeric(value: &Value) -> Option<f64> {
+    match value {
+        Value::F64(v) => Some(*v),
+        Value::I64(v) => Some(*v as f64),
+        _ => None,
+    }
+}
+
 async fn live_stream(socket: WebSocket, state: AppState) {
     let (mut sender, mut receiver) = socket.split();
     let mut rx = state.live_tx.subscribe();
@@ -115,14 +140,52 @@ async fn live_stream(socket: WebSocket, state: AppState) {
                     break;
                 }
             }
-            // Forward the next batch to the client as a JSON text frame.
+            // Forward the next batch to the client as a compact JSON text frame.
             batch = rx.recv() => {
                 let Ok(batch) = batch else { break };
-                let Ok(json) = serde_json::to_string(batch.as_ref()) else { continue };
+                let samples: Vec<LiveSample> = batch
+                    .samples
+                    .iter()
+                    .filter_map(|s| {
+                        numeric(&s.value).map(|value| LiveSample {
+                            ts_ms: s.ts as f64 / 1e6,
+                            channel: s.channel.clone(),
+                            value,
+                        })
+                    })
+                    .collect();
+                let frame = LiveBatch { seq: batch.seq, samples };
+                let Ok(json) = serde_json::to_string(&frame) else { continue };
                 if sender.send(Message::Text(json.into())).await.is_err() {
                     break;
                 }
             }
         }
     }
+}
+
+/// Serve the embedded dashboard, falling back to `index.html` for SPA routes.
+async fn static_handler(uri: Uri) -> Response {
+    let path = uri.path().trim_start_matches('/');
+    let path = if path.is_empty() { "index.html" } else { path };
+
+    if let Some(content) = Assets::get(path) {
+        let mime = mime_guess::from_path(path).first_or_octet_stream();
+        return Response::builder()
+            .header("content-type", mime.as_ref())
+            .body(Body::from(content.data.into_owned()))
+            .unwrap();
+    }
+
+    // No extension -> likely a client-side route, serve the app shell.
+    if !path.contains('.') {
+        if let Some(content) = Assets::get("index.html") {
+            return Response::builder()
+                .header("content-type", "text/html")
+                .body(Body::from(content.data.into_owned()))
+                .unwrap();
+        }
+    }
+
+    (StatusCode::NOT_FOUND, "not found").into_response()
 }
