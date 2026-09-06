@@ -13,6 +13,7 @@ Related documents:
 - [`calibration-station.md`](calibration-station.md) — worked example: a metrology/calibration station
 - [`sample-management.md`](sample-management.md) — tracking every unit under test: lifecycle, software & calibration state, graveyard
 - [`remote-access.md`](remote-access.md) — Secure Shell over the cloud: audited SSH via the agent's outbound tunnel
+- [`hil-testing.md`](hil-testing.md) — HIL power-loss & crash-recovery rig (R&S PSU + Arduino sensors)
 - [`roadmap.md`](roadmap.md) — prioritized feature backlog (P0 → P3)
 - [`compliance.md`](compliance.md) — CRA, GDPR, and certification (CE out of scope)
 
