@@ -1,23 +1,25 @@
 [workspace]
 resolver = "2"
 members = [
-    "crates/daqcore-core",
-    "crates/daqcore-driver",
-    "crates/daqcore-wal",
-    "crates/daqcore-agent",
+    "edge/daqcore-core",
+    "edge/daqcore-driver",
+    "edge/daqcore-wal",
+    "edge/daqcore-agent",
 ]
 
 [workspace.package]
 version = "0.1.0"
 edition = "2021"
+# Default license for the open-source edge crates. The cloud/ backend will be
+# licensed separately (LICENSE-COMMERCIAL) and must NOT inherit this default.
 license = "Apache-2.0"
 authors = ["DAQcore contributors"]
 repository = "https://github.com/Axj-b/DAQcore"
 
 [workspace.dependencies]
-daqcore-core = { path = "crates/daqcore-core", version = "0.1.0" }
-daqcore-driver = { path = "crates/daqcore-driver", version = "0.1.0" }
-daqcore-wal = { path = "crates/daqcore-wal", version = "0.1.0" }
+daqcore-core = { path = "edge/daqcore-core", version = "0.1.0" }
+daqcore-driver = { path = "edge/daqcore-driver", version = "0.1.0" }
+daqcore-wal = { path = "edge/daqcore-wal", version = "0.1.0" }
 serde = { version = "1", features = ["derive"] }
 postcard = { version = "1", features = ["alloc"] }
 crc32fast = "1"

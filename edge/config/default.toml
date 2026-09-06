@@ -1,5 +1,5 @@
 # DAQcore edge agent — example configuration
-# Run with: daqcore-agent --config config/default.toml
+# Run with: daqcore-agent --config edge/config/default.toml
 
 [agent]
 name = "bench-07"

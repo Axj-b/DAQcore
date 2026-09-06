@@ -1,0 +1,10 @@
+{
+  "name": "daqcore",
+  "version": "0.1.0",
+  "private": true,
+  "description": "DAQcore platform monorepo (frontend workspace root)",
+  "packageManager": "pnpm@9.0.0",
+  "workspaces": [
+    "cloud/dashboard"
+  ]
+}

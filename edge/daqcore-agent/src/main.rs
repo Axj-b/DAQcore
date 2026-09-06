@@ -27,7 +27,7 @@ use config::Config;
 )]
 struct Args {
     /// Path to the agent config file (TOML).
-    #[arg(short, long, default_value = "config/default.toml")]
+    #[arg(short, long, default_value = "edge/config/default.toml")]
     config: PathBuf,
 }
 

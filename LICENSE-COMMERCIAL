@@ -1,0 +1,34 @@
+DAQcore Commercial License
+===========================
+
+Copyright (c) 2026 DAQcore contributors. All rights reserved.
+
+This directory and its contents (the "Software") are the proprietary and
+confidential property of the DAQcore project. The Software is NOT open source
+and is NOT licensed under the Apache License 2.0.
+
+1. Grant of license. A license to use, copy, modify, or distribute the Software
+   is granted only under the terms of a separate written agreement with the
+   DAQcore project ("Commercial Agreement"). Without such an agreement, no
+   license is granted, and all rights are reserved.
+
+2. Restrictions. Unless expressly permitted by a Commercial Agreement, you may
+   not:
+     (a) use the Software except for evaluation purposes expressly authorized
+         in writing;
+     (b) copy, modify, merge, publish, distribute, sublicense, or sell the
+         Software;
+     (c) reverse engineer, decompile, or disassemble the Software, except as
+         required by applicable law.
+
+3. No warranty. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO
+   EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES
+   OR OTHER LIABILITY ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
+   THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+4. Contact. To obtain a Commercial Agreement, contact the DAQcore project.
+
+This is a placeholder license. The final commercial terms are to be provided by
+the DAQcore project's legal counsel.
