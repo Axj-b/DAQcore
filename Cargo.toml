@@ -5,6 +5,7 @@ members = [
     "edge/daqcore-driver",
     "edge/daqcore-wal",
     "edge/daqcore-agent",
+    "edge/daqcore-ethercat",
 ]
 
 [workspace.package]
@@ -20,6 +21,7 @@ repository = "https://github.com/Axj-b/DAQcore"
 daqcore-core = { path = "edge/daqcore-core", version = "0.1.0" }
 daqcore-driver = { path = "edge/daqcore-driver", version = "0.1.0" }
 daqcore-wal = { path = "edge/daqcore-wal", version = "0.1.0" }
+daqcore-ethercat = { path = "edge/daqcore-ethercat", version = "0.1.0" }
 serde = { version = "1", features = ["derive"] }
 postcard = { version = "1", features = ["alloc"] }
 crc32fast = "1"

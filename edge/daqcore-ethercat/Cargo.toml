@@ -1,0 +1,24 @@
+[package]
+name = "daqcore-ethercat"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+
+[features]
+default = []
+# Enable the SOEM (Simple Open EtherCAT Master) backend. Linux only; requires
+# libsoem to be installed and linked. The `sim` backend is always available.
+soem = []
+
+[dependencies]
+daqcore-core.workspace = true
+daqcore-driver.workspace = true
+serde.workspace = true
+async-trait.workspace = true
+tracing.workspace = true
+libc = "0.2"
+
+[dev-dependencies]
+tokio.workspace = true

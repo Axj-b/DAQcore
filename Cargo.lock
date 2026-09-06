@@ -375,6 +375,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "daqcore-ethercat"
+version = "0.1.0"
+dependencies = [
+ "async-trait",
+ "daqcore-core",
+ "daqcore-driver",
+ "libc",
+ "serde",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
 name = "daqcore-wal"
 version = "0.1.0"
 dependencies = [
